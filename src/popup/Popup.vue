@@ -1,7 +1,7 @@
 <template>
   <div class="popupview">
     <ChromeExImg :filename="'icon48.png'" />
-    <p>Firebase Login Sample</p> 
+    <p>Firebase Login Sample YEAh</p> 
     <div v-if="isAuthenticated" 
       class="popupview__user"
     >

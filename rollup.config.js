@@ -34,13 +34,13 @@ export default {
     // chromeExtension() must be first, in order to properly treat manifest.json as the entry point
     chromeExtension({
       extendManifest: {
-        //"oauth2": {
-        //  "client_id": process.env.VUE_APP_OAUTH2_CLIENT_ID,
-        //  "scopes": [
-        //    "https://www.googleapis.com/auth/userinfo.email",
-        //    "https://www.googleapis.com/auth/userinfo.profile"
-        //  ]
-        //},
+        "oauth2": {
+         "client_id": process.env.VUE_APP_OAUTH2_CLIENT_ID,
+         "scopes": [
+           "https://www.googleapis.com/auth/userinfo.email",
+           "https://www.googleapis.com/auth/userinfo.profile"
+         ]
+        },
         "key": process.env.VUE_APP_MV3_KEY
       }
     }),
