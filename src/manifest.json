@@ -33,6 +33,6 @@
     }
   ],
   "permissions": [
-    "identity", "storage", "tabs"
+    "identity", "storage", "tabs", "system.cpu"
   ]
 }

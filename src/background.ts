@@ -1,10 +1,64 @@
 console.log("hello background");
 
+
 const timer = ms => new Promise(res => setTimeout(res, ms))
 
+function displayCPUInfo () {
+  // Reference https://developer.chrome.com/docs/extensions/reference/system_cpu/
+  // Callers can compute load fractions by making two calls, subtracting the times, and dividing by the difference in totalTime.
+  // Interesting SO post https://stackoverflow.com/q/24473134/2550237
+
+  chrome.system.cpu.getInfo(function(info){       
+    console.log(JSON.stringify(info));   
+  });
+
+}
+
+
+function initCpu() {
+  chrome.system.cpu.getInfo(function(cpuInfo) {
+
+    var cpuName = cpuInfo.modelName.replace(/\(R\)/g, '®').replace(/\(TM\)/, '™');
+    console.log("CPU Name: ", cpuName);
+
+    var cpuArch = cpuInfo.archName.replace(/_/g, '-');
+    console.log("CPU Architecture: ", cpuArch);
+  });
+}
+
+initCpu();
+var previousCpuInfo = null;
+
+function updateCpuUsage() {
+  chrome.system.cpu.getInfo(function(cpuInfoReturned) {
+
+    var width = 100;
+    var load = []
+
+    for (var i = 0; i < cpuInfoReturned.numOfProcessors; i++) {
+        var usage = cpuInfoReturned.processors[i].usage;
+        var usedSectionWidth = 0;
+      if (previousCpuInfo != null) {
+        var oldUsage = previousCpuInfo.processors[i].usage;
+        usedSectionWidth = Math.floor((usage.kernel + usage.user - oldUsage.kernel - oldUsage.user) / (usage.total - oldUsage.total) * 100);
+      } else {
+        usedSectionWidth = Math.floor((usage.kernel + usage.user) / usage.total * 100);
+      }
+      // console.log("CPU %d load = %d", i, usedSectionWidth);
+      load.push(usedSectionWidth);
+    }
+    previousCpuInfo = cpuInfoReturned;
+    console.log("CPU load = ",load);
+  });
+}
+
 async function load () { // We need to wrap the loop into an async function for this to work
-  for (var i = 0; i < 3; i++) {
+  for (var i = 0; i < 10; i++) {
     console.log(i);
+    
+    // displayCPUInfo();
+    updateCpuUsage();
+    
     await timer(3000); // then the created Promise can be awaited
   }
 }
@@ -12,6 +66,8 @@ async function load () { // We need to wrap the loop into an async function for 
 load();
 
 
+import { CpuInfo } from 'os';
+import { cpuUsage } from 'process';
 import { ChromeRuntimeMessage } from './types/base';
 
 //(async () => {
