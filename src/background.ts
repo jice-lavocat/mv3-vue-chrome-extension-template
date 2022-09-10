@@ -1,8 +1,21 @@
 console.log("hello background");
+
+const timer = ms => new Promise(res => setTimeout(res, ms))
+
+async function load () { // We need to wrap the loop into an async function for this to work
+  for (var i = 0; i < 3; i++) {
+    console.log(i);
+    await timer(3000); // then the created Promise can be awaited
+  }
+}
+
+load();
+
+
 import { ChromeRuntimeMessage } from './types/base';
 
 //(async () => {
-// Contents側からの受信イベント
+// Contents : Receiving events
 chrome.runtime.onMessage.addListener(
   (request, sender, sendResponse) => {
     // Issue Token
@@ -12,7 +25,7 @@ chrome.runtime.onMessage.addListener(
       return true;
     }
 
-    // Revole Token
+    // Revoke Token
     if (request.type == ChromeRuntimeMessage.REVOKE_AUTH_TOKEN){
       chrome.identity.removeCachedAuthToken({token: request.token}, () => {});
       chrome.identity.clearAllCachedAuthTokens(() => {});
