@@ -57,6 +57,9 @@ export default {
       "process.env.VUE_APP_FIREBASE_MESSAGINGSENDERID": JSON.stringify(process.env.VUE_APP_FIREBASE_MESSAGINGSENDERID),
       "process.env.VUE_APP_FIREBASE_APPID": JSON.stringify(process.env.VUE_APP_FIREBASE_APPID),
       "process.env.VUE_APP_MEASUREMENTID": JSON.stringify(process.env.VUE_APP_MEASUREMENTID),
+      "process.env.INFLUXDB_TOKEN": JSON.stringify(process.env.INFLUXDB_TOKEN),
+      "process.env.INFLUXDB_ORG": JSON.stringify(process.env.INFLUXDB_ORG),
+      "process.env.INFLUXDB_BUCKET": JSON.stringify(process.env.INFLUXDB_BUCKET),
       preventAssignment: true
     }),
     typescript(),
